@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartQuest Co. - Your Message Awaits 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rose: #ff6b9d;
+            --deep-rose: #c41e3a;
+            --blush: #ffb3c6;
+            --gold: #d4af37;
+            --cream: #fff5f7;
+            --dark: #2d1b1f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--blush) 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Floating hearts animation */
+        .heart-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: float-up 15s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .message-container {
+            background: white;
+            padding: 4rem 3rem;
+            border-radius: 30px;
+            box-shadow: 0 40px 100px rgba(196, 30, 58, 0.3);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            border: 4px solid var(--gold);
+            position: relative;
+            z-index: 1;
+            animation: revealCard 1s ease-out;
+        }
+
+        @keyframes revealCard {
+            0% {
+                transform: scale(0.5) rotateY(90deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+
+        .message-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--rose), var(--gold), var(--deep-rose), var(--rose));
+            border-radius: 35px;
+            z-index: -1;
+            background-size: 300% 300%;
+            animation: gradientShift 5s ease infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .heart-icon {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            animation: heartbeat 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { 
+                transform: scale(1);
+            }
+            10%, 30% { 
+                transform: scale(1.15);
+            }
+            20%, 40% { 
+                transform: scale(1);
+            }
+        }
+
+        .message-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--deep-rose);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 0 var(--blush);
+            animation: fadeInDown 1.2s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .sender-name {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .message-content {
+            font-size: 1.6rem;
+            line-height: 2;
+            color: var(--dark);
+            font-style: italic;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(to bottom, transparent, var(--cream), transparent);
+            border-left: 4px solid var(--rose);
+            border-right: 4px solid var(--rose);
+            animation: fadeInUp 1.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .divider {
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 2rem auto;
+        }
+
+        .timestamp {
+            font-size: 0.9rem;
+            color: #999;
+            margin-top: 2rem;
+        }
+
+        .loading {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--deep-rose);
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 5px solid rgba(196, 30, 58, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--deep-rose);
+            animation: spin 1s ease-in-out infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: var(--deep-rose);
+            font-size: 1.3rem;
+            line-height: 1.8;
+        }
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--rose) 0%, var(--deep-rose) 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(196, 30, 58, 0.3);
+        }
+
+        .back-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(196, 30, 58, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .message-container {
+                padding: 3rem 2rem;
+            }
+
+            .message-header {
+                font-size: 2.2rem;
+            }
+
+            .message-content {
+                font-size: 1.3rem;
+            }
+
+            .heart-icon {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-bg" id="heartBg"></div>
+    
+    <div class="message-container" id="messageContainer">
+        <div class="loading" id="loading">
+            <div class="heart-icon">💕</div>
+            <div class="loading-spinner"></div>
+            <div>Loading your message...</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+
+        // Firebase configuration
+        const firebaseConfig = {
+		  apiKey: "AIzaSyBnIh_I9Wen1sG1LSYbyJOJCjvmWYZPekM",
+          authDomain: "heartquest-db2ca.firebaseapp.com",
+          databaseURL: "https://heartquest-db2ca-default-rtdb.asia-southeast1.firebasedatabase.app",
+          projectId: "heartquest-db2ca",
+          storageBucket: "heartquest-db2ca.firebasestorage.app",
+          messagingSenderId: "1083838622458",
+          appId: "1:1083838622458:web:285a321d366d7e474d3743"
+        };
+
+        let app, database;
+        let useFirebase = true;
+
+        // Initialize Firebase
+        try {
+            app = initializeApp(firebaseConfig);
+            database = getDatabase(app);
+        } catch (error) {
+            console.error('Firebase initialization failed, using fallback:', error);
+            useFirebase = false;
+        }
+
+        // Create floating hearts
+        function createFloatingHearts() {
+            const heartBg = document.getElementById('heartBg');
+            const hearts = ['💕', '💖', '💗', '💝', '💓', '💞'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (Math.random() * 2 + 1) + 'rem';
+                heartBg.appendChild(heart);
+            }
+        }
+
+        // Get QR code from URL parameter
+        function getQRCode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('code') || urlParams.get('id');
+        }
+
+        // Get message from Firebase
+        async function getMessageFromFirebase(qrCode) {
+            try {
+                const messageRef = ref(database, 'messages/' + qrCode.toUpperCase());
+                const snapshot = await get(messageRef);
+                if (snapshot.exists()) {
+                    return snapshot.val();
+                }
+                return null;
+            } catch (error) {
+                console.error('Firebase error:', error);
+                return null;
+            }
+        }
+
+        // Get message from localStorage (fallback)
+        function getMessageFromLocal(qrCode) {
+            const stored = localStorage.getItem('heartquest_messages');
+            if (!stored) return null;
+            
+            const messages = JSON.parse(stored);
+            return messages[qrCode.toUpperCase()];
+        }
+
+        // Display the message
+        async function displayMessage() {
+            const qrCode = getQRCode();
+            const container = document.getElementById('messageContainer');
+            
+            if (!qrCode) {
+                container.innerHTML = `
+                    <div class="error-icon">❌</div>
+                    <div class="message-header">Invalid QR Code</div>
+                    <p class="error-message">No QR code was provided. Please scan a valid HeartQuest Co. QR code.</p>
+                    <a href="index.html" class="back-link">← Back to HeartQuest Co.</a>
+                `;
+                return;
+            }
+
+            // Try Firebase first, then fallback to localStorage
+            let messageData = null;
+            
+            if (useFirebase) {
+                messageData = await getMessageFromFirebase(qrCode);
+            }
+            
+            if (!messageData) {
+                messageData = getMessageFromLocal(qrCode);
+            }
+            
+            if (!messageData) {
+                container.innerHTML = `
+                    <div class="error-icon">💔</div>
+                    <div class="message-header">Message Not Found</div>
+                    <p class="error-message">This QR code (${qrCode}) hasn't been assigned a message yet. Please contact HeartQuest Co. if you believe this is an error.</p>
+                    <a href="index.html" class="back-link">← Back to HeartQuest Co.</a>
+                `;
+                return;
+            }
+
+            // Display the message with animation
+            setTimeout(() => {
+                container.innerHTML = `
+                    <div class="heart-icon">💝</div>
+                    <div class="message-header">You Have a Message!</div>
+                    <div class="sender-name">From: ${messageData.sender}</div>
+                    <div class="divider"></div>
+                    <div class="message-content">${messageData.message}</div>
+                    <div class="divider"></div>
+                    <div class="timestamp">Delivered with love via HeartQuest Co. 💕</div>
+                    <a href="index.html" class="back-link">Learn More About HeartQuest Co.</a>
+                `;
+            }, 1500);
+        }
+
+        // Initialize
+        createFloatingHearts();
+        displayMessage();
+    </script>
+</body>
+</html>
